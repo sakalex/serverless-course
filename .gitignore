@@ -1,0 +1,4 @@
+.syndicate
+logs/
+__pycache__/
+.syndicate-config-dev/
