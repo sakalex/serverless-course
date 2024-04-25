@@ -21,8 +21,7 @@
             "allow_origins": ["*"],
             "expose_headers": ["*"],
             "max_age": 300
-        },
-        "source_arn": "hello_world"
+        }
   },
   "ephemeral_storage": 512,
   "logs_expiration": "${logs_expiration}"
