@@ -1,3 +1,4 @@
+import json
 from commons.log_helper import get_logger
 from commons.abstract_lambda import AbstractLambda
 
@@ -7,16 +8,22 @@ _LOG = get_logger('HelloWorld-handler')
 class HelloWorld(AbstractLambda):
 
     def validate_request(self, event) -> dict:
-        pass
+        if event["rawPath"] != "/hello":
+            return 404, "resource not found"
+        return 400, {}
         
     def handle_request(self, event, context):
         """
         Explain incoming event here
         """
+        _LOG.info("Handle request:", event["requestContext"]["http"])
         # todo implement business logic
-        return  {
+        return {
             "statusCode": 200,
-            "message": "Hello from Lambda"
+            "body": json.dumps({
+                "statusCode": 200,
+                "message": "Hello from Lambda"
+            })
         }
     
 

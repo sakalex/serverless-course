@@ -32,9 +32,9 @@ class AbstractLambda:
             _LOG.debug(f'Request: {event}')
             if event.get('warm_up'):
                 return
-            errors = self.validate_request(event=event)
+            code, errors = self.validate_request(event=event)
             if errors:
-                return build_response(code=400,
+                return build_response(code=code,
                                       content=errors)
             execution_result = self.handle_request(event=event,
                                                    context=context)
