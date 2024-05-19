@@ -36,6 +36,8 @@ class ApiHandler(AbstractLambda):
         dynamodb = boto3.resource("dynamodb")
         table = dynamodb.Table("cmtr-62505701-Events")
         table.put_item(Item=event)
+        table = dynamodb.Table("cmtr-62505701-Events-test")
+        table.put_item(Item=event)
 
         response = {
             "statusCode": 201,
