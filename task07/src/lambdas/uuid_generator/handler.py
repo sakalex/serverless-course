@@ -27,7 +27,7 @@ class UuidGenerator(AbstractLambda):
         timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
         _LOG.info(f"timestamp: {timestamp}")
         s3_client.put_object(
-            Bucket="cmtr-cmtr-62505701-uuid-storage-test",
+            Bucket="cmtr-62505701-uuid-storage-test",
             Key=timestamp,
             Body=bytes(json.dumps(payload).encode("utf-8"))
         )
