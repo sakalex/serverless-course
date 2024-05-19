@@ -1,0 +1,14 @@
+{
+  "sns_handler-role": {
+    "resource_type": "iam_role",
+    "principal_service": "lambda",
+    "predefined_policies": [
+      "AmazonSNSFullAccess",
+      "AWSLambdaBasicExecutionRole"
+    ],
+    "custom_policies": [],
+    "allowed_accounts": [],
+    "instance_profile": false,
+    "permissions_boundary": ""
+  }
+}
