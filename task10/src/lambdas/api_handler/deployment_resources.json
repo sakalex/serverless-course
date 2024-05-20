@@ -4,7 +4,8 @@
 		"principal_service": "lambda",
 		"predefined_policies": [
 			"AmazonDynamoDBFullAccess",
-			"AWSLambdaBasicExecutionRole"
+			"AWSLambdaBasicExecutionRole",
+			"AmazonCognitoPowerUser"
 		],
 		"custom_policies": [
       		
