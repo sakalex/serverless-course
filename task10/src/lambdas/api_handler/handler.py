@@ -135,6 +135,8 @@ class ApiHandler(AbstractLambda):
                 }
         except Exception as e:
             _LOG.error(f"Failed to handle request: {e}, {traceback.format_exc()}")
+            _LOG.error(f"Event: {event}")
+            _LOG.error(f"Context: {context}")
             return {"statusCode": 400}
 
     def validate_access_token(self, access_token: str) -> None:
