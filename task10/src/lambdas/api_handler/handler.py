@@ -1,3 +1,4 @@
+import datetime
 import decimal
 import json
 import traceback
@@ -29,7 +30,11 @@ class ApiHandler(AbstractLambda):
         _LOG.info(f"Event: {event}")
         try:
             method = event["requestContext"]["httpMethod"]
-            path = event["requestContext"]["resourcePath"]
+            path:str = event["requestContext"]["path"]
+
+            if path.startswith("/api"):
+                path = path.replace("/api", "")
+
             request_body = {}
 
             if "body" in event and event["body"]:
@@ -266,6 +271,26 @@ class ApiHandler(AbstractLambda):
         tables = sorted(tables, key=lambda table: table["id"])
         return tables
 
+        
+    def is_overlapping(
+        self,
+        start1: str,
+        end1: str, 
+        start2: str,
+        end2: str,
+    ) -> bool:
+
+        start1 = datetime.datetime.strptime(start1, "%H:%M").time()
+        end1= datetime.datetime.strptime(end1, "%H:%M").time()
+        start2 = datetime.datetime.strptime(start2, "%H:%M").time()
+        end2 = datetime.datetime.strptime(end2, "%H:%M").time()
+
+        if start1 <= start2 <= end1 or start1 <= end2 <= end1:
+            return True
+
+        return False
+
+
     def create_table(
         self, 
         id: int, 
@@ -303,6 +328,22 @@ class ApiHandler(AbstractLambda):
         slot_time_end: str,
     ) -> str:
         _LOG.info(f"Creating reservation for table: {table_number}")
+        response = tables_table.scan() 
+        tables = response["Items"]
+        for table in tables:
+            if table["number"] == table_number:
+                break
+        else:
+            raise ValueError(f"Table {table_number} not found")
+
+        reservations = self.get_reservations()
+        for reservation in reservations:
+            if reservation["tableNumber"] == table_number and reservation["date"] == date:
+                reservation_start = reservation["slotTimeStart"]
+                reservation_end = reservation["slotTimeEnd"]
+                if self.is_overlapping(reservation_start, reservation_end, slot_time_start, slot_time_end):
+                    raise ValueError("Reservation time is overlapping with another reservation")
+
         reservation_id = str(uuid.uuid4())
         item = {
             "id": reservation_id,
