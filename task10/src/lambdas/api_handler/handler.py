@@ -1,4 +1,5 @@
 import json
+import traceback
 import typing as t
 import uuid
 import re
@@ -10,10 +11,11 @@ from commons.abstract_lambda import AbstractLambda
 
 _LOG = get_logger('ApiHandler-handler')
 PREFIX = "cmtr-62505701-"
-USER_POOL_NAME = f"{PREFIX}simple-booking-userpool"
+SUFFIX="-test"
+USER_POOL_NAME = f"{PREFIX}simple-booking-userpool{SUFFIX}"
 cognito_client = boto3.client("cognito-idp")
-tables_table = boto3.resource("dynamodb").Table(f"{PREFIX}Tables")
-reservations_table = boto3.resource("dynamodb").Table(f"{PREFIX}Reservations")
+tables_table = boto3.resource("dynamodb").Table(f"{PREFIX}Tables{SUFFIX}")
+reservations_table = boto3.resource("dynamodb").Table(f"{PREFIX}Reservations{SUFFIX}")
 
 
 class ApiHandler(AbstractLambda):
@@ -26,7 +28,7 @@ class ApiHandler(AbstractLambda):
         _LOG.info(f"Event: {event}")
         try:
             method = event["requestContext"]["http"]["method"]
-            path = event["requestContext"]["http"]["path"]
+            path = event["rawPath"]
             request_body = json.loads(event["body"])
             _LOG.info(f"Method: {method}, Path: {path}, Request body: {request_body}")
 
@@ -132,7 +134,7 @@ class ApiHandler(AbstractLambda):
                     "body": "Not Found"
                 }
         except Exception as e:
-            _LOG.error(f"Failed to handle request: {e}")
+            _LOG.error(f"Failed to handle request: {e}, {traceback.format_exc()}")
             return {"statusCode": 400}
 
     def validate_access_token(self, access_token: str) -> None:
