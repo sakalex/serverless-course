@@ -18,7 +18,10 @@
             "cognito-idp:ListUserPools",
             "cognito-idp:ListUserPoolClients",
             "cognito-idp:AdminCreateUser",
-            "cognito-idp:AdminSetUserPassword"
+            "cognito-idp:AdminSetUserPassword",
+            "cognito-idp:GetUser",
+            "cognito-idp:AdminGetUser",
+            "cognito-idp:AdminInitiateAuth"
           ],
           "Effect": "Allow",
           "Resource": "*"
