@@ -1,5 +1,6 @@
 import decimal
 import json
+import traceback
 import typing as t
 import uuid
 import re
@@ -11,7 +12,7 @@ from commons.abstract_lambda import AbstractLambda
 
 _LOG = get_logger('ApiHandler-handler')
 PREFIX = "cmtr-62505701-"
-SUFFIX=""
+SUFFIX="-test"
 USER_POOL_NAME = f"{PREFIX}simple-booking-userpool{SUFFIX}"
 USER_POOL_CLIENT_NAME = "simple-booking-client"
 cognito_client = boto3.client("cognito-idp")
@@ -134,7 +135,8 @@ class ApiHandler(AbstractLambda):
                     "body": "Not Found"
                 }
         except Exception as e:
-            _LOG.error(f"Failed to handle request: {e}")
+            _LOG.error(f"Failed to handle request: {e}\n{traceback.format_exc()}")
+            _LOG.error(f"Event: {event}, Context: {context}")
             return {"statusCode": 400}
 
     def get_user_pool_id(self, user_pool_name: str) -> str:
