@@ -164,7 +164,7 @@ class ApiHandler(AbstractLambda):
             raise ValueError(f"User pool {USER_POOL_NAME} not found")
 
         return user_pool_id
-    
+
     def get_user_pool_client_id(self, user_pool_id: str) -> str:
 
         client_id = None
