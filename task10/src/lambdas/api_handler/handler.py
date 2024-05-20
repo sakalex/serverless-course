@@ -30,7 +30,11 @@ class ApiHandler(AbstractLambda):
         try:
             method = event["requestContext"]["httpMethod"]
             path = event["requestContext"]["resourcePath"]
-            request_body = json.loads(event["body"])
+            request_body = {}
+            
+            if "body" in event:
+                request_body = json.loads(event["body"])
+
             _LOG.info(f"Method: {method}, Path: {path}, Request body: {request_body}")
 
             if method == "POST" and path == "/signup":
@@ -114,7 +118,7 @@ class ApiHandler(AbstractLambda):
 
                 return {
                     "statusCode": 200,
-                    "body": json.dumps(reservation)
+                    "body": json.dumps({"reservationId": reservation})
                 }
             elif method == "GET" and path == "/reservations":
                 # self.authorize_user(event)
