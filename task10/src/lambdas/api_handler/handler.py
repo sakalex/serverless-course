@@ -28,8 +28,8 @@ class ApiHandler(AbstractLambda):
 
         _LOG.info(f"Event: {event}")
         try:
-            method = event["requestContext"]["http"]["method"]
-            path = event["requestContext"]["http"]["path"]
+            method = event["requestContext"]["httpMethod"]
+            path = event["requestContext"]["resourcePath"]
             request_body = json.loads(event["body"])
             _LOG.info(f"Method: {method}, Path: {path}, Request body: {request_body}")
 
