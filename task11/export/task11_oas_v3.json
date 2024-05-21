@@ -113,8 +113,8 @@
     },
     "/tables": {
       "get": {
-        "summary": "Get table by id",
-        "description": "Get table by id",
+        "summary": "Get all tables",
+        "description": "Get all tables",
         "responses": {
           "200": {
             "description": "200 response",
@@ -307,6 +307,8 @@
     },
     "/tables/{tableId}": {
       "get": {
+        "summary": "Get table by id",
+        "description": "Get table by id",
         "parameters": [
           {
             "name": "tableId",
